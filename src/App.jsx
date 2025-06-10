@@ -1,21 +1,37 @@
 import React, { useState } from 'react';
 import SkipSelector from './components/SkipSelector';
-import './index.css'
+import SkipDetails from './components/SkipDetails';
 
+const App = () => {
+  const [selectedSkip, setSelectedSkip] = useState(null);
 
-export default function App() {
-  const [skip, setSkip] = useState(null);
+  const handleSkipSelect = (skip) => {
+    setSelectedSkip(skip);
+  };
 
-  if (skip) {
-    return (
-      <div className="flex items-center justify-center h-screen text-center p-6">
-        <div>
-          <h2 className="text-2xl font-bold">You selected:</h2>
-          <p className="mt-3 text-lg">{skip.name} — £{skip.price}</p>
-        </div>
-      </div>
-    );
-  }
+  const handleBack = () => {
+    setSelectedSkip(null);
+  };
 
-  return <SkipSelector onContinue={setSkip} />;
-}
+  const handleConfirm = () => {
+    // Handle the confirmation logic here
+    alert(`Confirmed selection of ${selectedSkip.size} Yard Skip!`);
+    // You can add more logic here, such as navigating to a confirmation page or submitting the selection to a server.
+  };
+
+  return (
+    <div>
+      {!selectedSkip ? (
+        <SkipSelector onContinue={handleSkipSelect} />
+      ) : (
+        <SkipDetails
+          selectedSkip={selectedSkip}
+          onBack={handleBack}
+          onConfirm={handleConfirm}
+        />
+      )}
+    </div>
+  );
+};
+
+export default App;
